@@ -312,3 +312,16 @@ def payment_transaction_detail(request, pk):
     elif request.method == 'DELETE':
         payment.delete()
         return Response({"message": "Payment transaction deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+    
+    
+    
+# @swagger_auto_schema(method='POST', request_body=CourseSerializer)
+# @api_view(['GET', 'POST'])
+# def course_list(request):
+#     if request.method == 'GET':
+#         courses = Course.objects.prefetch_related('modules__topics').all().order_by('-modified_at')
+#         serializer = CourseSerializer(courses, many=True)
+#         return Response(serializer.data)
