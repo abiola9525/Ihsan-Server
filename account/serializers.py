@@ -12,6 +12,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         token['blockchain_address'] = user.blockchain_address
+        token['eval_test'] = user.eval_test
         token['is_admin'] = user.is_admin
         token['is_active'] = user.is_active
         
@@ -21,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "first_name", "last_name" , "sex", "blockchain_address" ,"is_user", "password"]
+        fields = ["id", "email", "first_name", "last_name" , "sex", "blockchain_address" ,"is_user", "eval_test", "password"]
         read_only_fields = ["is_user"]
         extra_kwargs = {
                     'password': {'write_only': True}
@@ -35,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
                     sex=validated_data['sex'],
                     blockchain_address=validated_data.get('blockchain_address'),
                     is_user=True,
+                    eval_test = False,
                 )
         
         user.set_password(validated_data['password'])

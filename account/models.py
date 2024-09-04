@@ -39,7 +39,9 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, blank=True, null=True)
     sex = models.CharField(max_length=15, blank=True, null=True)
     blockchain_address = models.CharField(max_length=255, blank=True, null=True)
+    eval_test = models.BooleanField(default=False)
     is_user = models.BooleanField(default=True)
+    
 
     confirmation_code = models.CharField(max_length=10, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
