@@ -26,13 +26,13 @@ class QuestionSerializer(serializers.ModelSerializer):
     answer = AnswerSerializer(many=True, read_only=True)
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ['id', 'quiz', 'question_text', 'answer']
         
 class QuizSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(many=True, read_only=True)
     class Meta:
         model = Quiz
-        fields = '__all__'
+        fields = ['id', 'module', 'passing_score', 'question']
         
 class PaymentTransactionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -33,16 +33,21 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    choices = (
+        ('CLASS ONE', 'Class One'),
+        ('CLASS TWO', 'Class Two'),
+        ('CLASS THREE', 'Class Three'),
+    )
     username = None
     email = models.EmailField(max_length=100, unique=True)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     sex = models.CharField(max_length=15, blank=True, null=True)
     blockchain_address = models.CharField(max_length=255, blank=True, null=True)
-    eval_test = models.BooleanField(default=False)
+    eval_test = models.BooleanField(default=False, blank=True, null=True)
+    user_class = models.CharField(choices=choices, default='CLASS ONE', max_length=255, blank=True, null=True)
     is_user = models.BooleanField(default=True)
     
-
     confirmation_code = models.CharField(max_length=10, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)

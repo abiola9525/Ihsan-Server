@@ -61,7 +61,7 @@ def register_user(request):
 
         # Save the code in the user's profile
         user.confirmation_code = confirmation_code
-        # user.confirmation_code = "9525"
+        user.eval_test = False
         user.save()
 
         # Send confirmation code via email
@@ -106,3 +106,15 @@ def confirm_email(request):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+    
+    
+@api_view(['PUT'])
+def update_user_status(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    user.eval_test = True
+    user.save()
+    return Response({'message': 'User evaluation test status updated to "True"'})
