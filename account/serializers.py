@@ -67,3 +67,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
 class ResetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True, required=True)
+    
+    
+class TokenSerializer(serializers.Serializer):
+    access = serializers.CharField()

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.shortcuts import render
 from web3 import Web3
 import os
+import jwt
 from rest_framework import status
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, parser_classes, permission_classes
@@ -21,7 +22,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 
 from account.models import User
-from . serializers import MyTokenObtainPairSerializer, UserSerializer, ResetPasswordSerializer, UpdateUserSerializer, ChangePasswordSerializer, ForgotPasswordSerializer
+from . serializers import MyTokenObtainPairSerializer, UserSerializer, ResetPasswordSerializer, UpdateUserSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, TokenSerializer
 # ResetPasswordSerializer, UpdateUserSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
 import uuid
@@ -118,3 +119,22 @@ def update_user_status(request, pk):
     user.eval_test = True
     user.save()
     return Response({'message': 'User evaluation test status updated to "True"'})
+
+
+@swagger_auto_schema(method='POST', request_body=TokenSerializer)
+@api_view(['POST'])
+def decode_jwt(request):
+    serializer = TokenSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        token = serializer.validated_data['access']
+        
+        try:
+            decoded_token = jwt.decode(token, options={"verify_signature": False})
+            return Response(decoded_token, status=status.HTTP_200_OK)
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.InvalidTokenError:
+            return Response({'message': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
